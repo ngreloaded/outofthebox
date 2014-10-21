@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,8 +13,9 @@ public class MeritOrderAdmission {
 	private MeritList mlist[]= new MeritList[8];
 	HashMap<String,VirtualProgramme> progList = new HashMap<String,VirtualProgramme>();
 	public int ds[] = {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2};
+	public int dscr[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 	
-	public MeritOrderAdmission (String csvFile1,String csvFile2,String csvFile3,String outputFile){
+	public MeritOrderAdmission (String csvFile1,String csvFile2,String csvFile3){
 		//read using bufferreader
 		int lineno;
 		BufferedReader br = null;
@@ -103,13 +105,14 @@ public class MeritOrderAdmission {
 					String[] info = line.split(splitBy);
 					boolean b2;
 					
-					if(info[1]=="DS")
+					if(info[1].equals("DS"))
 						b2=true;
 					else
 						b2=false;
 					Candidate ad1 = new Candidate(info[0]);
 					ad1.set_pref(info[3]);
 					ad1.set_ds(b2);
+					//System.out.print(ad1.gds());
 					b1.add(ad1);
 				}
 				
@@ -174,7 +177,7 @@ public class MeritOrderAdmission {
 			if ( c1.guid().compareTo( c2.guid() ) < 0) i++;
 			else if( c1.guid().compareTo( c2.guid() ) > 0) j++;
 			else {
-				c1.set_ds(c2.gds());//System.out.println(c2.getPrefString());
+				c1.set_ds(c2.gds());//System.out.println(c2.gds());
 				c1.set_pref(c2.getPrefString());
 			}
 			i++;j++;
@@ -198,28 +201,39 @@ public class MeritOrderAdmission {
 //					mlist[i].element(j).resetIterator();
 				}
 			}
-			// ds allocation. first ds array is copied then after all ds alloction is done then ds array is updated
-			// this is to ensure that 3 ds students of same rank get 3 seats. in the same insti.
-			int[] b=ds.clone();
+			// ds allocation.
 			for (int i=0; i<cml.size(); i++){
 				Candidate c1 = cml.get(i);
 				//System.out.println(c1.guid() +","+c1.getPeekPref());
 				if(!c1.isPrefEmpty()){
 					int a = c1.getPeekPref().charAt(0)-65;
-					if(c1.gds()&&c1.gbid()=="-2"&&ds[a]>0){
+					if(c1.gds()&&c1.gbid()=="-2"&&(ds[a]>0||dscr[a]==c1.grank(0))){
+						//System.out.print("yes");
 						c1.set_bid(c1.getPeekPref());
-						b[a]--;
+						ds[a]--;
+						dscr[a]=c1.grank(0);
 					}
 					c1.removePeek();
 				}
 			}
-			for(int i=0; i<26; i++) ds[i]=b[i];
 		}while(c!=0);
 	}
 	
-	public void print(){
-		for(int i=0; i<cml.size(); i++){
-			System.out.println(cml.get(i).guid() +","+ cml.get(i).gbid());
+	public void print(String outputFile){
+		try
+		{
+		    FileWriter writer = new FileWriter(outputFile);
+		    writer.write("CandidateUniqueId,ProgramID\n");
+		    for(int i=0; i<cml.size(); i++)
+		    {
+		    	writer.append(cml.get(i).guid()+","+cml.get(i).gbid()+"\n");
+		    }
+		    writer.flush();
+		    writer.close();
 		}
-	}
+		catch(IOException e)
+		{
+		     e.printStackTrace();
+		}	}
+	
 }

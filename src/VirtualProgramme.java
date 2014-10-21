@@ -9,9 +9,7 @@ public class VirtualProgramme {
 		code = cd;
 		seatAvailable = capacity;
 	}
-	
-	//set closing rank funtion
-	
+    
 	//getter
 	public String gcode(){
 		return code;

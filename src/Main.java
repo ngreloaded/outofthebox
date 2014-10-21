@@ -12,7 +12,4 @@ public class Main {
 		M.print(outputFile);
 		
 	}
-	//VP[prog_no][index] is the VirtualProgrammes object for a certain programme no and its subtype
-	//read files and tell the readings to MeritOrderAdmission.
-	//take input of allocated seats from MeritOrderAdmission and display.
 }

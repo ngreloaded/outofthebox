@@ -38,9 +38,9 @@ public class Candidate {
 	private int[] rank = new int[8];
 	private Queue<String> prefList;
 	private String pref;//only repeated variable in the project
-//	private Iterator<String> it;
 	
 	
+    
 	//Constructor
 	public Candidate(String id){
 		uid = id;
@@ -72,8 +72,9 @@ public class Candidate {
 			a = str.indexOf('_',prev);
 		}
 		prefList.add(str.substring(prev));
-//		it = prefList.iterator();
 	}
+    
+    
 	
 	//getter functions
 	public String guid(){
@@ -97,9 +98,6 @@ public class Candidate {
 	public String getPrefString(){
 		return pref;
 	}
-//	public void resetIterator(){
-//		it = prefList.iterator();
-//	}
 	public int grank(int i){
 		return rank[i];
 	}

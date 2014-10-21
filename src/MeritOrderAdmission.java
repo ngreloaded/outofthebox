@@ -24,13 +24,11 @@ public class MeritOrderAdmission {
 		ArrayList<VirtualProgramme> a0 = new ArrayList<VirtualProgramme>();
 		ArrayList<Candidate> a = new ArrayList<Candidate>();
 		ArrayList<Candidate> b1 = new ArrayList<Candidate>();;
+        
+        
 		try {    //input from programs.csv
-
 			lineno = 0;
-			br = new BufferedReader(new FileReader(csvFile1)); 
-			
-			
-			
+			br = new BufferedReader(new FileReader(csvFile1));
 			while ((line = br.readLine()) != null) {  
 				if(lineno!=0)
 				{
@@ -42,10 +40,8 @@ public class MeritOrderAdmission {
 					a0.add(new VirtualProgramme(info[1],r));
 				}
 				lineno++;
-
-			}  
-
-		} catch (FileNotFoundException e) {  
+			}
+		} catch (FileNotFoundException e) {
 			e.printStackTrace();  
 		} catch (IOException e) {  
 			e.printStackTrace();  
@@ -60,8 +56,9 @@ public class MeritOrderAdmission {
 			}  		
 		}
 		//a0 comes from program.csv
+        
+        
 		try {    //input from ranklist.csv
-
 			lineno = 0;
 			br = new BufferedReader(new FileReader(csvFile2));  
 			while ((line = br.readLine()) != null) {  
@@ -96,6 +93,9 @@ public class MeritOrderAdmission {
 			}  		
 		}
 		//a comes from meritlist.csv
+        
+        
+        
 		try {  //input from choices.csv
 			lineno=0;
 			br = new BufferedReader(new FileReader(csvFile3));  
@@ -135,10 +135,9 @@ public class MeritOrderAdmission {
 				}  
 			}  		
 		}
-
 		//b comes from choices.csv
-		//for(int i=0; i<a0.size(); i++) System.out.println(a0.get(i).gcode());
-		this.intialize(a0, a);
+        
+        this.intialize(a0, a);
 		this.update(b1);
 		this.allot();
 	}
@@ -193,22 +192,18 @@ public class MeritOrderAdmission {
 					if(mlist[i].element(j).gbid() =="-2") {
 						if(mlist[i].element(j).isPrefEmpty()) mlist[i].element(j).set_bid("-1");
 						else{
-							//System.out.println(mlist[i].element(j).getPeekPref());
 							progList.get(mlist[i].element(j).getPeekPref()).apply(mlist[i].element(j),i);
 						}
 						c++;
 					}
-//					mlist[i].element(j).resetIterator();
 				}
 			}
 			// ds allocation.
 			for (int i=0; i<cml.size(); i++){
 				Candidate c1 = cml.get(i);
-				//System.out.println(c1.guid() +","+c1.getPeekPref());
 				if(!c1.isPrefEmpty()){
 					int a = c1.getPeekPref().charAt(0)-65;
 					if(c1.gds()&&c1.gbid()=="-2"&&(ds[a]>0||dscr[a]==c1.grank(0))){
-						//System.out.print("yes");
 						c1.set_bid(c1.getPeekPref());
 						ds[a]--;
 						dscr[a]=c1.grank(0);
@@ -234,6 +229,6 @@ public class MeritOrderAdmission {
 		catch(IOException e)
 		{
 		     e.printStackTrace();
-		}	}
-	
+		}
+    }
 }
